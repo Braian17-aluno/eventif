@@ -4,39 +4,35 @@ from subscriptions.forms import SubscriptionForm
 from django.core import mail
 from django.template.loader import render_to_string
 from django.contrib import messages
+from django.conf import settings
 # Create your views here.
 def subscribe(request):
   if(request.method == 'POST'):
+    return create(request)
+  else:
+    return new(request)
+    
+def create(request):
     form = SubscriptionForm(request.POST)
 
-    if form.is_valid():
-      body = render_to_string('subscriptions/subscription_email.txt', form.cleaned_data)
-      email = mail.send_mail('Confirmação de inscrição!', body, 'contato@eventif.com.br', ['contato@eventif.com.br', form.cleaned_data['email']])
-      messages.success(request, 'Inscrição realizada com sucesso!')
-      return HttpResponseRedirect('/inscricao/')
-    else: 
+    if not form.is_valid():
       return render(request, 'subscriptions/subscription_form.html', {'form': form})
-  else:
-    context = {'form': SubscriptionForm()}
-    return render(request, 'subscriptions/subscription_form.html', context)
 
-MESSAGE = '''
-Olá! Tudo bem?
+    #mail
+    _send_mail(
+      'subscriptions/subscription_email.txt', 
+      form.cleaned_data, 
+      'Confirmação de inscrição!', 
+      settings.DEFAULT_FROM_EMAIL, 
+      form.cleaned_data['email']
+      )
+    #message
+    messages.success(request, 'Inscrição realizada com sucesso!')
+    return HttpResponseRedirect('/inscricao/')
 
-Muito obrigado por se inscrever no Eventif.
+def new(request):
+  return render(request, 'subscriptions/subscription_form.html', {'form': SubscriptionForm()})
 
-Estes foram os dados que você enviou na sua
-inscrição.
-
-Nome: Braai
-CPF: 12345678901
-Email: braai@gmail.com
-Telefone: 53-12345-6789
-
-Em até 48h úteis alguem da nossa equipe entrará
-em contato com você para concluirmos a sua 
-inscrição.
-
-Atenciosamente,
-Equipe EventIF
-'''
+def _send_mail(template_name, context, subject, from_, to):
+    body = render_to_string(template_name, context)
+    email = mail.send_mail(subject, body, from_, [from_, to])
