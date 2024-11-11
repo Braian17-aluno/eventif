@@ -1,0 +1,3 @@
+-r requirenents.txt
+ipython
+jupyter
