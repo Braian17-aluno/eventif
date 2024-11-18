@@ -1,19 +1,21 @@
 from django.shortcuts import render, redirect
 from contact.forms import FormularioContato
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 
 def contact(request):
-    if request.method == 'POST':
-        form = FormularioContato(request.POST)
-        if form.is_valid():
-            # Process the form data
-            pass
-            return redirect('success')
+    if (request.method == 'POST'):
+        return create(request)
     else:
-        form = FormularioContato()
-    return render(request, 'contact/contact.html', {'form': form})
+        return new(request)
 
+def create(request):
+    form = FormularioContato(request.POST)
+    
+    if not form.is_valid():
+        return render(request, 'contact/contact.html', {'form': form})
+    else:
+        return HttpResponseRedirect('/contact/')
 
-def success(request):
-  return HttpResponse('Success!')
+def new(request):
+    return render(request, 'contact/contact.html', {'form': FormularioContato()})

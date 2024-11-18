@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from core.views import home
 from subscriptions.views import subscribe, detail
-from contact.views import contact, success 
+from contact.views import contact
 
 urlpatterns = [
     path('', home),
@@ -26,6 +26,5 @@ urlpatterns = [
     path('inscricao/<int:pk>/', detail),
     path('admin/', admin.site.urls),
     path('contact/', contact),
-    path('success/', success),
 
 ]

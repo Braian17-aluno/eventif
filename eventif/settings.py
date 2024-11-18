@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django_extensions',
     'test_without_migrations',
     'core',
-    'subscriptions', 
+    'subscriptions',
+    'contact'
 ]
 
 MIDDLEWARE = [
