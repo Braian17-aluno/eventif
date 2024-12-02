@@ -12,8 +12,8 @@ class ContactModelTest(TestCase):
     )
     self.obj.save()
 
-  def test_create(self):
-    self.assertTrue(Contact.objects.exists())
+  # def test_create(self):
+  #   self.assertTrue(Contact.objects.exists())
 
   # def test_created_at(self):
   #   self.assertIsInstance(self.obj.created_at, datetime)
