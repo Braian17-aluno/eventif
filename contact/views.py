@@ -5,6 +5,7 @@ from django.core import mail
 from django.template.loader import render_to_string
 from django.contrib import messages
 from django.conf import settings
+from contact.models import Contact
 # Create your views here.
 def contact(request):
   if(request.method == 'POST'):
@@ -27,6 +28,8 @@ def create(request):
       settings.DEFAULT_FROM_EMAIL
       )
     
+    Contact.objects.create(**form.cleaned_data)
+
     #message
     messages.success(request, 'Contato realizado com sucesso!')
     return HttpResponseRedirect('/contact/')

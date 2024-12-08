@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.core import mail
 from contact.forms import FormularioContato
-
+from contact.models import Contact
 
 class ContatoGet(TestCase):
   
@@ -41,6 +41,9 @@ class ContatoPostValido(TestCase):
   def test_send_contact_email(self):
     self.assertEqual(1, len(mail.outbox))
 
+  def test_save_contact(self):
+        self.assertTrue(Contact.objects.exists())
+
 class ContatoPostInvalido(TestCase):
   def setUp(self):
     self.resp = self.client.post('/contact/', {})
@@ -58,6 +61,9 @@ class ContatoPostInvalido(TestCase):
   def test_form_has_error(self):
     form = self.resp.context['form']
     self.assertTrue(form.errors)
+
+  def test_dont_save_contact(self):
+        self.assertFalse(Contact.objects.exists())
 
 class ContatoMensagemSucesso(TestCase):
   def test_message(self):
