@@ -1,7 +1,9 @@
 from django.db import models
 from django.db.models.signals import pre_save
-from django.apps import AppConfig
-from django.core.signals import setting_changed
+from django.dispatch import receiver
+from django.core import mail
+from django.template.loader import render_to_string
+from django.conf import settings
 # Create your models here.
 
 class Contact(models.Model):
@@ -21,3 +23,18 @@ class Contact(models.Model):
   
   def __str__(self):
     return self.nome
+
+@receiver(pre_save, sender=Contact)
+def contact_response_email(sender, instance, **kwargs):
+  if (instance.resposta != '' and instance.resp_check == True):
+    data = {'nome': instance.nome, 'telefone': instance.telefone, 'email': instance.email, 'mensagem': instance.mensagem, 'resposta': instance.resposta}                                                                
+    def _send_mail(template_name, context, subject, from_, to):
+      body = render_to_string(template_name, context)
+      email = mail.send_mail(subject, body, from_, [from_, to])
+    _send_mail(
+        'contact/contact_response.txt', 
+        data,
+        'Resposta de contato.', 
+        settings.DEFAULT_FROM_EMAIL,
+        instance.email
+        )

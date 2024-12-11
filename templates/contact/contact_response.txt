@@ -1,0 +1,14 @@
+Oi {{ nome }} seu contato foi respondido.
+
+Telefone: {{ telefone }}
+Email: {{ email }}
+
+Mensagem:
+{{ mensagem }}
+
+Resposta:
+{{ resposta }}
+
+Atenciosamente,
+--
+Equipe Eventif
