@@ -1,5 +1,7 @@
 from django.db import models
-
+from django.db.models.signals import pre_save
+from django.apps import AppConfig
+from django.core.signals import setting_changed
 # Create your models here.
 
 class Contact(models.Model):

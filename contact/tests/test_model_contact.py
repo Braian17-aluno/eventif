@@ -15,8 +15,8 @@ class ContactModelTest(TestCase):
   def test_create(self):
     self.assertTrue(Contact.objects.exists())
 
-  def test_created_at(self):
-    self.assertIsInstance(self.obj.created_at, datetime)
+  def test_enviado_em(self):
+    self.assertIsInstance(self.obj.enviado_em, datetime)
 
   def test_str(self):
     self.assertEqual('Braai', str(self.obj))
