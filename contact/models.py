@@ -34,7 +34,7 @@ def contact_response_email(sender, instance, **kwargs):
     _send_mail(
         'contact/contact_response.txt', 
         data,
-        'Resposta de contato.', 
+        'Resposta de contato.',
         settings.DEFAULT_FROM_EMAIL,
         instance.email
         )
